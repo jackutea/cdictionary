@@ -54,6 +54,7 @@ static bool Dictionary_Add(Dictionary *dict, long key, void *value) {
         entry->value = value;
         entry->isExists = true;
         entry->next = NULL;
+        dict->count++;
         return true;
     } else {
         do {
@@ -70,6 +71,7 @@ static bool Dictionary_Add(Dictionary *dict, long key, void *value) {
         newEntry->isExists = true;
         newEntry->next = NULL;
         entry->next = newEntry;
+        dict->count++;
         return true;
     }
 }
