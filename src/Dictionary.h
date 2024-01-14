@@ -15,7 +15,7 @@ typedef struct Dictionary Dictionary;
 typedef struct DictionaryEntry DictionaryEntry;
 
 struct DictionaryEntry {
-    int key;
+    long key;
     void *value;
     DictionaryEntry *next;
     bool isExists;
@@ -40,7 +40,7 @@ static void Dictionary_Free(Dictionary *dict) {
     free(dict);
 }
 
-static void Dictionary_Add(Dictionary *dict, int key, void *value) {
+static void Dictionary_Add(Dictionary *dict, long key, void *value) {
     DictionaryEntry *all = dict->all;
     if (dict->count >= dict->capacity) {
         // log error
@@ -67,7 +67,7 @@ static void Dictionary_Add(Dictionary *dict, int key, void *value) {
     }
 }
 
-static bool Dictionary_TryGet(Dictionary *dict, int key, void **value) {
+static bool Dictionary_TryGet(Dictionary *dict, long key, void **value) {
 
     DictionaryEntry *all = dict->all;
     int index = key % dict->capacity;
@@ -86,7 +86,7 @@ static bool Dictionary_TryGet(Dictionary *dict, int key, void **value) {
     return false;
 }
 
-static bool Dictionary_Remove(Dictionary *dict, int key) {
+static bool Dictionary_Remove(Dictionary *dict, long key) {
     DictionaryEntry *all = dict->all;
     int index = key % dict->capacity;
 
