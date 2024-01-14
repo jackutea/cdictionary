@@ -3,8 +3,8 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define DictionaryLogNA(x) printf("%s:%d %s", __FILE__, __LINE__, x)
 #define DictionaryLog(x, ...)                                                                                                                                  \
@@ -40,12 +40,12 @@ static void Dictionary_Free(Dictionary *dict) {
     free(dict);
 }
 
-static void Dictionary_Add(Dictionary *dict, long key, void *value) {
+static bool Dictionary_Add(Dictionary *dict, long key, void *value) {
     DictionaryEntry *all = dict->all;
     if (dict->count >= dict->capacity) {
         // log error
         DictionaryLogNA("[error]Dictionary is full\r\n");
-        return;
+        return false;
     }
     int index = key % dict->capacity;
     DictionaryEntry *entry = &all[index];
@@ -54,16 +54,23 @@ static void Dictionary_Add(Dictionary *dict, long key, void *value) {
         entry->value = value;
         entry->isExists = true;
         entry->next = NULL;
+        return true;
     } else {
-        while (entry->next != NULL) {
+        do {
+            if (entry->key == key) {
+                // log error
+                DictionaryLog("[error]Dictionary key %ld is exists\r\n", key);
+                return false;
+            }
             entry = entry->next;
-        }
+        } while (entry != NULL);
         DictionaryEntry *newEntry = (DictionaryEntry *)malloc(sizeof(DictionaryEntry));
         newEntry->key = key;
         newEntry->value = value;
         newEntry->isExists = true;
         newEntry->next = NULL;
         entry->next = newEntry;
+        return true;
     }
 }
 

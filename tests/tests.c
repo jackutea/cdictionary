@@ -7,6 +7,7 @@ int main() {
 
     // Add
     Dictionary_Add(dict, 1, "hello");
+    Dictionary_Add(dict, 1, "world");
 
     int *value1 = malloc(sizeof(int));
     *value1 = 123;
